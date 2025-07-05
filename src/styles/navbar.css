@@ -1,0 +1,76 @@
+
+.mainPage_navbar {
+    height: 60px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-color: rgba(10, 17, 27, 1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    justify-content: space-between;
+}
+
+.navbar_left, .navbar_right {
+    height: 100%;
+}
+
+.navbar_left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar_left h1 {
+    font-size: 28px;
+    font-family: 'Figtree', sans-serif;
+}
+
+
+.navbar_right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.menus_navbar {
+    padding: 8px 14px;
+    transition: 0.15s ease-in-out;
+    border-radius: 3px;
+    background-color: rgb(27, 41, 73);
+    transition: 0.15s ease-in-out;
+    display: flex;
+    align-content: center;
+    gap: 8px;
+}
+
+.menus_navbar i {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.menus_navbar:last-child {
+    border: 1.3px solid rgb(82, 82, 82);
+}
+
+.menus_navbar:hover {
+    cursor: pointer;
+    filter: brightness(130%);
+}
+
+.menus_navbar p {
+    font-size: 17px;
+    font-weight: 450;
+    font-family: 'Roboto', sans-serif;
+}
+
+.pfp_navbar img {
+    width: 34px;
+    border-radius: 50px;
+    border: 1.5px solid white;
+}

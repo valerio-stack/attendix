@@ -1,0 +1,178 @@
+
+.roomPage {
+    width: 100%;
+    background-color: rgb(8, 9, 10);
+    padding-top: 30px;
+    padding-bottom: 30px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.roomPage_top {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.roomPage_titleNId {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.roomPage_titleNId h1 {
+    font-size: 21.6px;
+}
+
+.roomPage_titleNId p {
+    color: rgb(209, 209, 209);
+    font-size: 15.5px;
+}
+
+
+.roomPage h1, .roomPage p {
+    font-family: 'Figtree', sans-serif;
+    user-select: none;
+}
+
+.date {
+    display: flex;
+    align-items: center;
+}
+
+.date img {
+    width: 14.5px;
+    filter: invert(1);
+}
+
+.dateText {
+    padding: 3px 5px;
+    transition: 0.15s ease-in-out;
+    border-radius: 3px;
+    position: relative;
+}
+
+.dateText:hover {
+    cursor: pointer;
+}
+
+.dateText > * {
+    transition: 0.15s ease-in-out;
+}
+
+.dateText:hover > * {
+    color: rgb(174, 243, 255);
+}
+
+.dateText:active > * {
+    color: rgb(9, 247, 255);
+}
+
+.dateText input {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: transparent;
+    color: transparent;
+    border: none;
+    outline: none;
+    color-scheme: dark;
+}
+
+.dateText input[type="date"]::-webkit-calendar-picker-indicator {
+    width: 100%;
+    padding-left: 1000px;
+}
+
+.dateText input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    cursor: pointer;
+}
+
+.dateText p {
+    color: white;
+}
+
+.leftArrow_container, .rightArrow_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.15s ease-in-out;
+}
+
+.leftArrow_container:hover, .rightArrow_container:hover {
+    background-color: rgb(62, 62, 62);
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 3px;
+}
+
+.leftArrow_container:active, .rightArrow_container:active {
+    background-color: rgb(100, 100, 100);
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 3px;
+}
+
+.leftArrow_container:hover ~ .rightArrow_container {
+    padding: 3px;
+}
+
+.rightArrow_container:hover ~ .leftArrow_container {
+    padding: 3px;
+}
+
+
+
+
+.roomStats_wrapper {
+    height: 200px;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.roomStats_left, .roomStats_right {
+    height: 100%;
+    width: 49.3%;
+    border: 1px solid white;
+}
+
+.tableContainer {
+    width: 90%;
+    border: 1px solid gray;
+}
+
+table {
+    color: white;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 13.5px 10px;
+    text-align: left;
+}
+
+th {
+    background-color: rgb(46, 46, 46);
+    font-size: 16px;
+}
+
+tr {
+    background-color: rgb(24, 24, 24);
+    font-size: 14px;
+}
+
+tr:not(:last-child):not(:first-child) {
+    border-bottom: 1px solid gray;
+}
+
+tr:first-child {
+    border-bottom: 1px solid white;
+}

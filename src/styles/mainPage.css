@@ -1,0 +1,274 @@
+.mainPage {
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(0deg,rgb(1, 72, 92), rgb(1, 37, 48), rgb(0, 22, 25));
+    display: flex;
+    padding-top: 50px;
+    position: relative;
+}
+
+.mainPage_withoutNavbar {
+    height: calc(100vh - 60px);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content_mainPage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: visible;
+}
+
+.contentMainPage_wrapper {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+}
+
+.inputNText_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: fit-content;
+}
+
+.inputNText_wrapper p {
+    color: white;
+    font-family: 'Figtree', sans-serif;
+    text-align: center;
+    font-size: 34px;
+    font-weight: 650;
+    color: rgba(255, 255, 255, 1);
+    letter-spacing: 1.5px;
+}
+
+.inputs_wrapper {
+    display: flex;
+    gap: 8px;
+    position: relative;
+}
+
+.inputs_wrapper input {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: transparent;
+    color: transparent;
+    outline: none;
+    border: none;
+}
+
+.inputs_wrapper div {
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    color: white;
+    border: 1.4px solid white;
+    width: 50px;
+    height: 48px;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes numbersFadeIn {
+    from { opacity: 0 } to { opacity: 1; }
+}
+
+.numbers_container h5 {
+    animation: numbersFadeIn 0.14s ease-in-out;
+}
+
+@keyframes button_on_in {
+    from { background-color: rgb(162, 162, 162); } 
+    to { background-color: rgb(0, 225, 255); }
+}
+
+.content_mainPage .button_on {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    width: 469px;
+    margin: auto;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 540;
+    transition: 0.15s ease-in-out;
+    background: linear-gradient(50deg, rgb(43, 79, 157) , rgb(4, 236, 252));
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    animation: button_on_in 0.3s ease-in-out;
+}
+
+.content_mainPage .button_off {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    width: 465px;
+    margin: auto;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 540;
+    transition: 0.15s ease-in-out;
+    background: linear-gradient(50deg, rgb(171, 175, 184) , gray);
+    border: none;
+    outline: none;
+    border-radius: 4px;
+}
+
+.content_mainPage .button_on:hover {
+    cursor: pointer;
+    filter: brightness(130%);
+}
+
+.content_mainPage .button_on:active {
+    filter: brightness(80%);
+}
+
+.makeRoomMenu_background {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    margin-top: -50px;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.makeRoom_menu {
+    padding: 12px 12px;
+    background-color: rgb(34, 34, 34);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.makeRoom_menu input {
+    width: 370px;
+    padding: 7px 12px;
+    border: none;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 4px;
+    color: rgb(227, 226, 226);
+    font-size: 14.5px;
+    font-weight: 530;
+}
+
+.makeRoom_menu input::placeholder {
+    font-weight: 530;
+}
+
+.makeRoom_menu input:focus {
+    outline: 0.4px solid rgba(255, 255, 255, 0.25);
+    outline-offset: 1px;
+}
+
+.makeRoomMenu_buttonsWrapper{
+    display: flex;
+    justify-content: end;
+    gap: 5px;
+}
+
+.makeRoom_menu button {
+    padding: 4px 8px;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14.5px;
+    color: rgb(237, 235, 235);
+    transition: 0.15s ease-in-out;
+}
+
+.makeRoom_menu button:hover {
+    cursor: pointer;
+    filter: brightness(130%);
+}
+
+.makeRoom_menu button:active {
+    filter: brightness(80%);
+}
+
+.makeRoom_menu a {
+    padding: 4px 8px;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14.5px;
+    color: rgb(237, 235, 235);
+    transition: 0.15s ease-in-out;
+}
+
+.makeRoom_menu a:hover {
+    cursor: pointer;
+    filter: brightness(130%);
+}
+
+.makeRoom_menu a:active {
+    filter: brightness(80%);
+}
+
+.makeRoom_menu .cancelButton {
+    background-color: rgb(64, 64, 64);
+}
+
+.makeRoom_menu .createButton {
+    background-color: rgb(2, 140, 174);
+}
+
+
+
+
+
+.secondMenu_inputContainer {
+    display: flex;
+}
+
+.input_rightButtons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    width: 35px;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    user-select: none;
+    transition: 0.15s ease-in-out;
+}
+
+#deleteButton {
+    background-color: black;
+    color: rgb(254, 254, 254);
+    margin-left: -5px;
+    border-right: none;
+    font-size: 15.5px;
+}
+
+#addButton {
+    background-color: black;
+    color: white;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+#deleteButton:hover, #addButton:hover {
+    cursor: pointer;
+    background-color: rgb(41, 41, 41);
+}
+
+#deleteButton:active, #addButton:active {
+    background-color: rgb(72, 72, 72);
+}
