@@ -56,12 +56,8 @@ export default function SignUp_signIn(props) {
                     if (res.showError === true) {set_errorFromServer(res.message)} 
                     else {
                         set_errorFromServer(null)
-                        let date = new Date()
-                        date.setDate(date.getDate() + 30)
-                        let splitDate = String(date).split(' ')
-                        let formattedDate = `${splitDate[0]}, ${splitDate[2]} ${splitDate[1]} ${splitDate[3]} ${splitDate[4]} UTC`
-
-                        navigate('/mainPage')
+                        props.set_cookie(document.cookie)
+                        navigate('/')
                     }
                 })
                 .catch((err) => {

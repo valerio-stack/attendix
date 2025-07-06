@@ -8,17 +8,14 @@ import Room from './room/room'
 
 
 function App() {
+  let [cookie, set_cookie] = useState(document.cookie)
+
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<FirstView/>}/>
-          <Route path="/getStarted" element={<SignUp_signIn/>}/>
-
-          <Route 
-            path='/mainPage' 
-            element={ <MainPage/>}
-          />
+          <Route path="/" element={(cookie === '') ? <FirstView/> : <MainPage/>}/>
+          <Route path="/getStarted" element={<SignUp_signIn set_cookie={set_cookie}/>}/>
 
           <Route 
             path={`/room/:roomNameNId`} 

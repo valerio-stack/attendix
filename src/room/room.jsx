@@ -7,21 +7,7 @@ import { io } from "socket.io-client"
 
 export default function Room(props) {
     /* ------------------------------------------- */
-    useEffect(() => {
-        fetch('http://localhost:3000/getUserDatas', {
-            method: "GET",
-            credentials: 'include'
-        })
-            .then((resRaw) => resRaw.text())
-            .then((cookies) => {
-                console.log(cookies)
-                const socket = io('http://localhost:3000')
-                socket.on('sendSocketId', (id) => {
-                    socket.emit('sendCookiesWithId', cookies, id)
-                    console.log(id)
-                })    
-            })
-    },[])
+    
 
 
     /* -------------------------------------------- */

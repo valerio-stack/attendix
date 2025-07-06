@@ -35,7 +35,7 @@ export default function MainPage(props) {
     /* join room button ---------------------------------------- */
 
     function join_room() {
-
+        
     }
 
     /* --------------------------------------------------------- */

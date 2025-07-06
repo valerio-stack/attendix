@@ -6,6 +6,9 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const http = require('http')
 const { error } = require('console')
+const mysql = require('mysql2/promise')
+const crypto = require('crypto')
+const { format } = require('date-fns')
 
 const app = express()
 const server = http.createServer(app)
@@ -22,69 +25,62 @@ app.use(express.text())
 /* sign up / sign in stuff --------------------------------------- */
 
 app.post('/postSignUpDatas', (req, res) => {
-    fs.readFile('C:/Users/lisa/Downloads/attendix_database/users.json', "utf-8", (err, data) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send({showError: true, message: "Server error! Try again later!"})
+    async function isEmailInDB() {
+        let matchedEmail = await runSQL(`SELECT email FROM users WHERE email = '${req.body.email}' LIMIT 1`)
+        let emailInDB = (matchedEmail.length !== 0) ? true : false
+
+        if (emailInDB === true) {
+            res.send({showError: true, message: "You are already registered!"})
         }
 
+        else if (emailInDB === false) {
+            let insertCode = `
+                INSERT INTO users (fullname, email, password, date_joined)
+                Values (
+                    '${req.body.fullname}',
+                    '${req.body.email}',
+                    '${crypto.createHash('sha256').update(req.body.password).digest('hex')}',
+                    NOW()
+                )
+            `
+            runSQL(insertCode)
 
-        let isUserSignedUpMap = 
-            JSON.parse(data).map((user) => {
-                if (Object.values(user).includes(req.body.email)) { return true} 
-                else { return  false }
-            })
-        let userAlreadySignedUp = isUserSignedUpMap.includes(true)
-        
-        if (!userAlreadySignedUp) {
-            let newData = JSON.parse(data)
-            newData.push(req.body)
-            fs.writeFile('C:/Users/lisa/Downloads/attendix_database/users.json', JSON.stringify(newData), err => (err) && console.log(err))
-
-            let token = jwt.sign({fullname: req.body.fullname},process.env.SECRET_KEY, {expiresIn: "7d"})
-            res.cookie('userDatas', token, {expires: new Date(Date.now() +  5 * 24 * 60 * 60 * 1000), path:'/', httpOnly: true})
+            let expireDate = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
+            res.cookie('fullname', `${req.body.fullname}`, {expires: expireDate})
+            res.cookie('email', `${req.body.email}`, {expires: expireDate})
+            res.cookie('logged','true')
+            res.send({showError: false})
         }
-        else { res.send({showError: true, message: "Your email has already been used!"}) }
-    })
+    }
+    isEmailInDB()
 })
 
 
 app.post('/postSignInDatas', (req, res) => {
-    fs.readFile('C:/Users/lisa/Downloads/attendix_database/users.json', "utf-8", (err, data) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send({showError: true, message: "Server error! Try again later!"})
+    async function areDatasInDB() {
+        let matchedDatas = await runSQL(
+            `SELECT email, password FROM users WHERE fullname = '${req.body.fullname}' 
+            AND email = '${req.body.email}' 
+            AND password = '${crypto.createHash('sha256').update(req.body.password).digest('hex')}' 
+            LIMIT 1`
+        )
+        let datasInDB = (matchedDatas.length !== 0) ? true : false
+
+        if (datasInDB === false) {
+            res.send({showError: true, message: "Cannot find account!"})
         }
 
-        let isUserSignedInMap = 
-            JSON.parse(data).map((user) => {
-                let valuesInJSON = Object.values(user).join(',')
-                let inputtedValues = `${req.body.fullname},${req.body.email},${req.body.password}`
-                let inputtedDatasMatch = (valuesInJSON == inputtedValues)
-
-                if (inputtedDatasMatch) { return true } 
-                else { return false }
-            })
-        let userSignedIn = isUserSignedInMap.includes(true)
-        
-        if (userSignedIn) {
-            let token = jwt.sign({fullname: req.body.fullname}, process.env.SECRET_KEY, {expiresIn: "7d"})
-            res.cookie('userDatas', token, {expires: new Date(Date.now() +  5 * 24 * 60 * 60 * 1000), path:'/', httpOnly: true})
-            res.send({showError: false, message: "User successfully signed in!"})
+        else {
+            let expireDate = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
+            res.cookie('fullname', `${req.body.fullname}`, {expires: expireDate})
+            res.cookie('email', `${req.body.email}`, {expires: expireDate})
+            res.cookie('logged','true')
+            res.send({showError: false})
         }
-        else { res.send({showError: true, message: "User doesn't exist!"}) }
-    })
-})
-
-
-app.get('/getUserDatas', (req, res) => {
-    try {
-        let parsedCookie = req.headers.cookie.split('=')[1]
-        res.send(jwt.verify(parsedCookie, process.env.SECRET_KEY))
-    } catch(error) {
-        console.log(error)
     }
+    areDatasInDB()
 })
+
 
 
 /* socket io stuff ------------------------------------------------ */
@@ -95,51 +91,27 @@ const io = require("socket.io")(server, {
     }
 })
 
-io.on('connection', (socket) => {
-    socket.emit('sendSocketId', socket.id)
 
-    socket.on('sendCookiesWithId', (cookies, id) => {
-        let fullname = JSON.parse(cookies).fullname
-        fs.readFile('C:/Users/lisa/Downloads/attendix_database/users_and_socketId.json', 'utf-8', (data, err) => {
-            if (err) { 
-                console.log(err)
-                return
-            }
 
-            let parsedJSON = JSON.parse(data)
-            let fullnameInJSON;
-            parsedJSON.map((each) => {
-                if (each.fullname === fullname) {fullnameInJSON === true}
-            })
-            
-            if (fullnameInJSON !== true) {
-                if (parsedJSON === null) {
-                    fs.writeFile(
-                        'C:/Users/lisa/Downloads/attendix_database/users_and_socketId.json', 
-                        JSON.stringify([{fullname, id}]),
-                        err => (err) && console.log(err)
-                    )
-                }
-                else {
-                    fs.writeFile(
-                        'C:/Users/lisa/Downloads/attendix_database/users_and_socketId.json',
-                        JSON.stringify({fullname, id}), 
-                        err => (err) && console.log(err))
-                }
-            }
 
-            else {
-                fs.readFile('C:/Users/lisa/Downloads/attendix_database/users_and_socketId.json', 'utf-8', (data, err) => {
-                    parsedJSON.map((each) => {
-                        each.fullname === fullname
-                    })
-                })
-            }
+/* reusable functions --------------------------------- */
+
+async function runSQL(sqlCode) {
+    try {
+        let connection = await mysql.createConnection({
+            host     : 'localhost',
+            user     : 'root',
+            password: '22072010',
+            database : 'attendix',
+            multipleStatements: true
         })
+        let [results, fields] = await connection.query(sqlCode)
+        return results
+    }
 
-        // fs.writeFile('C:/Users/lisa/Downloads/attendix_database/users_and_socketId.json', data, err => (err) && console.log(err))
+    catch (err) {
+        console.log(err)
+    }
+}
 
-
-        // console.log(Array.from(io.sockets.sockets.keys()))
-    })
-})
+runSQL(`SELECT email FROM users WHERE email = 'johndoe@gmail.com' LIMIT 1`).then((log) => console.log(log))
