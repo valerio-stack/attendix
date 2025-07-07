@@ -46,9 +46,8 @@ app.post('/postSignUpDatas', (req, res) => {
             runSQL(insertCode)
 
             let expireDate = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
-            res.cookie('fullname', `${req.body.fullname}`, {expires: expireDate})
-            res.cookie('email', `${req.body.email}`, {expires: expireDate})
-            res.cookie('logged','true')
+            res.cookie('fullname', req.body.fullname, {expires: expireDate})
+            res.cookie('email', req.body.email, {expires: expireDate})
             res.send({showError: false})
         }
     }
@@ -72,14 +71,46 @@ app.post('/postSignInDatas', (req, res) => {
 
         else {
             let expireDate = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
-            res.cookie('fullname', `${req.body.fullname}`, {expires: expireDate})
-            res.cookie('email', `${req.body.email}`, {expires: expireDate})
-            res.cookie('logged','true')
+            res.cookie('fullname', req.body.fullname, {expires: expireDate})
+            res.cookie('email', req.body.email, {expires: expireDate})
             res.send({showError: false})
         }
     }
     areDatasInDB()
 })
+
+
+
+/* create / join room logic --------------------------------------------- */
+
+app.post('/makeRoom', (req, res) => {
+    req.body = JSON.parse(req.body)
+    console.log(req.body)
+
+    let addRoom_code = `
+        INSERT INTO room VALUES (
+            '${req.body.room_id}',
+            '${req.body.room_name}'
+        );
+
+        INSERT INTO joined_room VALUES (
+            '${req.body.email}',
+            '${req.body.room_id}'
+        )
+    `
+    runSQL(addRoom_code)
+})
+
+
+app.post('/checkUrlValidity', (req, res) => { // req is the room_id here
+    async function isRoomAvailable() {
+        let matchedRoom = await runSQL(`SELECT * FROM room WHERE room_id = '${req.body}'`)
+        let roomAvailable = matchedRoom.length === 0 ? true : false
+        if (roomAvailable === true) {res.send({showError: true})} else {res.send({showError: false})}
+    }
+    isRoomAvailable()
+})
+
 
 
 

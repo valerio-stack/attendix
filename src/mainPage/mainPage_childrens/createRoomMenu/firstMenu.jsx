@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Route, Link, useNavigate } from "react-router-dom"
 import {apStyleTitleCase} from 'ap-style-title-case'
+import NProgress from "nprogress"
 
 
 export default function FirstMenu(props) {
@@ -9,8 +10,20 @@ export default function FirstMenu(props) {
     let navigate = useNavigate()
 
     function handle_createRoomButtonClick() {
-        let randomId = [1,2,3,4,5,6,7,8].map((each) => Math.floor(Math.random() * 9))
-        navigate(`/room/${apStyleTitleCase(inputValue.trim())}-${randomId.join('')}`)
+        NProgress.start()
+        let randomId = [1,2,3,4,5,6,7,8].map((each) => Math.floor(Math.random() * 9)).join('')
+        fetch('http://localhost:3000/makeRoom', {
+            method: 'POST', 
+            credentials: 'include', 
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+                room_id: randomId, 
+                room_name: apStyleTitleCase(inputValue).trim(), 
+                email: decodeURIComponent(document.cookie.split(';')[1].split('=')[1].replaceAll("'",''))})
+        })
+
+        navigate(`/room/${inputValue}-${randomId}`)
+        NProgress.done()
     }
 
     return (
@@ -21,7 +34,7 @@ export default function FirstMenu(props) {
                         type="text" 
                         ref={inputRef} 
                         placeholder="Room name" 
-                        onChange={(event) => set_inputValue(event.target.value)}
+                        onChange={(event) => apStyleTitleCase(set_inputValue(event.target.value.trim()))}
                     />
 
                     <div className="makeRoomMenu_buttonsWrapper">

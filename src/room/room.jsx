@@ -1,20 +1,33 @@
 import { useState, useEffect, useRef } from "react"
-import { useParams } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import Navbar from "../mainPage/mainPage_childrens/navbar"
-import ToggleSwitch from "../assetComponents/toggleSwitch"
+import ToggleSwitch from "../assets/toggleSwitch"
+import NProgress from "nprogress"
 import { io } from "socket.io-client"
 
 
 export default function Room(props) {
     /* ------------------------------------------- */
     
-
-
+    
     /* -------------------------------------------- */
 
     let [role, set_role] = 'admin'
+    let [showError, set_showError] = useState(false)
     let {roomNameNId} = useParams()
     let [roomName, roomId] = roomNameNId.split('-')
+
+    let navigate = useNavigate()
+    fetch('http://localhost:3000/checkUrlValidity', {method: 'POST', headers: {'Content-type': 'text/plain'}, body: roomId})
+        .then((res) => res.json())
+        .then((status) => {
+            NProgress.start()
+            if (status.showError == true) {navigate('/')}
+            NProgress.done()
+        })
+
+    
+    
 
     /* All stats:
         - Room name
@@ -71,125 +84,16 @@ export default function Room(props) {
                             <th>Note</th>
                         </tr>
 
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
 
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Fauzan Karim Setyawan</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>07.00</td>
-                            <td>?</td>
-                            <td>-</td>
-                        </tr>
-
-                        <tr>
-                            <td>Joki Suryanto</td>
-                            <td><ToggleSwitch height={20} width={38}/></td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>Caturan</td>
-                        </tr>
+                        { [1,2,3,4,5,6].map((each) => 
+                            <tr>
+                                <td>Fauzan Karim Setyawan</td>
+                                <td><ToggleSwitch height={20} width={38}/></td>
+                                <td>07.00</td>
+                                <td>?</td>
+                                <td>-</td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import NProgress from 'nprogress'
+import nProgress from "nprogress"
 
 
 export default function SignUp_signIn(props) {
@@ -17,6 +18,7 @@ export default function SignUp_signIn(props) {
 
 
     function handle_click(event) {
+        nProgress
         event.preventDefault()
 
         let form = new FormData(formRef.current)
